@@ -1,0 +1,519 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Yamuna River Clean‑Up Survey - Delhi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    * { font-family: 'Poppins', sans-serif; }
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      background-attachment: fixed;
+      color: white;
+    }
+    .header-bg {
+      background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                  url('https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80');
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+    }
+    .river-icon { filter: drop-shadow(0 0 8px rgba(72,187,120,0.7)); }
+    .form-section {
+      background: rgba(30,41,59,0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(100,116,139,0.3);
+      border-radius: 12px;
+      transition: all .3s ease;
+    }
+    .form-section:hover {
+      background: rgba(30,41,59,0.8);
+      border-color: rgba(72,187,120,0.4);
+    }
+    .submit-btn {
+      background: linear-gradient(135deg, #10b981, #047857);
+      box-shadow: 0 4px 6px rgba(6,95,70,0.3);
+      transition: all .3s ease;
+    }
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(6,95,70,0.4);
+    }
+    .water-wave {
+      position: fixed; bottom: 0; left: 0;
+      width: 100%; height: 20%;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" fill="rgba(16,185,129,0.2)"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z"/></svg>');
+      background-size: 1200px 100%;
+      animation: wave 12s linear infinite;
+      z-index: -1;
+    }
+    .water-wave:nth-child(2) {
+      animation: wave 18s linear infinite;
+      opacity: .5;
+      height: 15%;
+      background-size: 1100px 100%;
+      background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" fill="rgba(16,185,129,0.1)"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z"/></svg>');
+    }
+    @keyframes wave { 0% {background-position-x:0;} 100% {background-position-x:1200px;} }
+    #transition { transform-origin: center; }
+    .email-modal {
+      display: none; position: fixed; top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.9);
+      z-index:100;
+      justify-content:center;
+      align-items:center;
+    }
+    .email-content {
+      background:#1e293b; border-radius:16px;
+      padding:30px; max-width:500px; width:90%;
+      text-align:center;
+      border:1px solid rgba(72,187,120,0.3);
+      box-shadow:0 10px 25px rgba(6,95,70,0.3);
+    }
+    .instructions {
+      background:#334155; border-radius:8px;
+      padding:15px; margin:20px 0; text-align:left;
+    }
+    .star-rating span { transition: all .2s ease; }
+    .progress-bar {
+      height:8px; background:#0f172a;
+      border-radius:4px; overflow:hidden; margin:15px 0;
+    }
+    .progress-fill {
+      height:100%; background: linear-gradient(90deg,#10b981,#047857);
+      border-radius:4px; transition:width .5s ease;
+    }
+    .section-status {
+      display:flex; justify-content:space-between;
+      margin-bottom:5px; font-size:14px; color:#94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Waves -->
+  <div class="water-wave"></div>
+  <div class="water-wave"></div>
+
+  <div class="max-w-4xl mx-auto px-4 py-10">
+    <div class="header-bg p-8 rounded-2xl mb-10">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <div class="flex items-center gap-4 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 river-icon text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"/>
+            </svg>
+            <h1 class="text-4xl font-bold">Yamuna River Clean‑Up</h1>
+          </div>
+          <p class="text-lg text-green-200 max-w-2xl">
+            Join our initiative to restore the beauty of Yamuna River in Delhi.
+            Your feedback helps us create a cleaner environment for everyone.
+          </p>
+        </div>
+        <div class="bg-green-900/30 p-4 rounded-xl border border-green-700/50">
+          <div class="text-center">
+            <div class="text-2xl font-bold text-green-400">1,240+</div>
+            <div class="text-green-200">Volunteers Joined</div>
+          </div>
+          <div class="h-4 w-24 bg-green-500 rounded-full mx-auto mt-3 overflow-hidden">
+            <div class="h-full bg-green-300 w-3/4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-slate-800/50 p-8 rounded-2xl shadow-xl form-section">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold mb-2">Yamuna River Clean‑Up Survey</h1>
+        <p class="text-slate-300 mb-1">
+          Help us build a cleaner future for Delhi by filling out this short survey.
+        </p>
+        <div class="w-24 h-1 bg-green-500 rounded-full mx-auto mt-4"></div>
+      </div>
+
+      <form id="survey-form" class="space-y-8">
+        <!-- Section 1: Personal Info -->
+        <div class="form-section p-6">
+          <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+            </svg>
+            Personal Info (Optional)
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block mb-2 text-slate-300">Name</label>
+              <input type="text" name="name" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition"/>
+            </div>
+            <div>
+              <label class="block mb-2 text-slate-300">Age</label>
+              <select name="age" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition overflow-y-scroll max-h-40">
+                <option value="">-- Select Age --</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 text-slate-300">Occupation</label>
+              <input type="text" name="occupation" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition"/>
+            </div>
+            <div>
+              <label class="block mb-2 text-slate-300">Do you live near the Yamuna River in Delhi?</label>
+              <select name="live-near-river" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition">
+                <option value="">-- Select --</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Awareness & Participation -->
+        <div class="form-section p-6">
+          <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+              <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+            </svg>
+            Awareness & Participation
+          </h2>
+          <div class="space-y-6">
+            <div>
+              <label class="block mb-2 text-slate-300">Were you aware of the river pollution before?</label>
+              <select name="aware-before" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition">
+                <option value="">-- Select --</option>
+                <option>Yes</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 text-slate-300">Have you participated in clean‑ups before?</label>
+              <select name="participated-before" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition">
+                <option value="">-- Select --</option>
+                <option>Yes, with this project</option>
+                <option>Yes, with another group</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 text-slate-300">How did you hear about this project?</label>
+              <select name="heard-from" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition">
+                <option value="">-- Select --</option>
+                <option>Social Media</option>
+                <option>School/College</option>
+                <option>Local Community</option>
+                <option>Friends/Family</option>
+                <option>Newspaper/TV</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Environmental Attitudes -->
+        <div class="form-section p-6">
+          <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z" clip-rule="evenodd"/>
+            </svg>
+            Environmental Attitudes
+          </h2>
+          <div class="space-y-6">
+            <div>
+              <label class="block mb-2 text-slate-300">How important is a clean river to your community?</label>
+              <select name="importance" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition">
+                <option value="">-- Select --</option>
+                <option>Very Important</option>
+                <option>Somewhat Important</option>
+                <option>Not Important</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 text-slate-300">What are the biggest pollution causes?</label>
+              <textarea name="pollution-causes" rows="3" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition" placeholder="Industrial waste, plastic pollution, sewage..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Project Feedback -->
+        <div class="form-section p-6">
+          <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H6z" clip-rule="evenodd"/>
+            </svg>
+            Project Feedback
+          </h2>
+          <div class="space-y-6">
+            <div>
+              <label class="block mb-2 text-slate-300">Did our clean‑up efforts make a difference?</label>
+              <select name="impact" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition">
+                <option value="">-- Select --</option>
+                <option>Yes, definitely</option>
+                <option>Somewhat</option>
+                <option>Not really</option>
+                <option>No opinion</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 text-slate-300">What part of the project did you like most?</label>
+              <textarea name="liked-part" rows="2" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition" placeholder="Community involvement, awareness campaigns..."></textarea>
+            </div>
+            <div>
+              <label class="block mb-2 text-slate-300">How can we improve?</label>
+              <textarea name="improvements" rows="3" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition" placeholder="More frequent clean‑ups, better waste management..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 5: Your Role -->
+        <div class="form-section p-6">
+          <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+            </svg>
+            Your Role
+          </h2>
+          <div class="space-y-6">
+            <div>
+              <label class="block mb-2 text-slate-300">Would you volunteer in future projects?</label>
+              <select name="volunteer" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition">
+                <option value="">-- Select --</option>
+                <option>Yes</option>
+                <option>Maybe</option>
+                <option>No</option>
+              </select>
+            </div>
+            <div>
+              <label class="block mb-2 text-slate-300">Any message for our team?</label>
+              <textarea name="message" rows="3" class="w-full p-3 rounded-lg bg-slate-900 border border-slate-700 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none transition" placeholder="Keep up the good work!..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 6: Rating -->
+        <div class="form-section p-6">
+          <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+            </svg>
+            Rate the Project
+          </h2>
+          <div class="text-center">
+            <label class="block mb-4 text-slate-300 text-lg">How would you rate our river clean‑up project?</label>
+            <div id="star-rating" class="flex gap-1 justify-center text-4xl cursor-pointer select-none star-rating">
+              <span data-value="1" class="text-slate-500 hover:text-yellow-400">★</span>
+              <span data-value="2" class="text-slate-500 hover:text-yellow-400">★</span>
+              <span data-value="3" class="text-slate-500 hover:text-yellow-400">★</span>
+              <span data-value="4" class="text-slate-500 hover:text-yellow-400">★</span>
+              <span data-value="5" class="text-slate-500 hover:text-yellow-400">★</span>
+            </div>
+            <div class="mt-3 text-slate-400">
+              <span id="rating-text">Tap to rate (1-5 stars)</span>
+            </div>
+            <input type="hidden" name="rating" id="rating-value" value="">
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="pt-6">
+          <input type="submit" value="Submit Survey" class="w-full submit-btn text-white font-bold py-4 px-4 rounded-xl cursor-pointer text-lg"/>
+        </div>
+      </form>
+    </div>
+
+    <div class="text-center mt-10 text-slate-400">
+      <p>Yamuna River Clean‑Up Initiative • Delhi, India</p>
+      <p class="text-sm mt-2">Together we can make a difference for our environment</p>
+    </div>
+  </div>
+
+  <!-- Email modal -->
+  <div class="email-modal" id="email-modal">
+    <div class="email-content">
+      <div class="flex justify-center mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+        </svg>
+      </div>
+      <h2 class="text-2xl font-bold text-green-400 mb-4">📧 Send Survey Results</h2>
+      <p class="text-slate-300 mb-6">
+        We're preparing your survey results to be sent to our Delhi team.
+      </p>
+      <div class="section-status">
+        <span>Processing your responses</span>
+        <span id="progress-percentage">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+      </div>
+      <div class="instructions">
+        <p class="mb-3 text-slate-200">When your email client opens:</p>
+        <ol class="list-decimal pl-5 text-left text-slate-300 space-y-2">
+          <li>Verify the recipient is: <strong class="text-green-400">jahazielolivera127127@gmail.com</strong></li>
+          <li>Review the survey data in the email body</li>
+          <li>Click <strong class="text-green-400">Send</strong> to submit your survey</li>
+          <li>You'll receive a confirmation email within 24 hours</li>
+        </ol>
+      </div>
+      <div class="flex justify-center gap-4 mt-8">
+        <button id="cancel-btn" class="px-6 py-3 bg-slate-700 rounded-lg hover:bg-slate-600 transition">Cancel</button>
+        <button id="send-email-btn" class="px-6 py-3 bg-green-600 rounded-lg hover:bg-green-500 transition flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+          </svg>
+          Open Email Client
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transition overlay -->
+  <div id="transition" class="fixed inset-0 bg-white z-50 scale-100 opacity-0 pointer-events-none transition-all duration-700 ease-in-out"></div>
+
+  <script>
+    // Fill ages
+    const ageSelect = document.querySelector('select[name="age"]');
+    for (let i = 5; i <= 100; i++) {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = i;
+      ageSelect.appendChild(opt);
+    }
+
+    // Rating stars
+    const stars = document.querySelectorAll('#star-rating span');
+    const ratingInput = document.getElementById('rating-value');
+    const ratingText = document.getElementById('rating-text');
+    const ratingPhrases = {
+      1: "Poor – We need to improve",
+      2: "Fair – Could be better",
+      3: "Good – Satisfactory experience",
+      4: "Very Good – Well done",
+      5: "Excellent – Outstanding work!"
+    };
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        const val = star.getAttribute('data-value');
+        ratingInput.value = val;
+        ratingText.textContent = ratingPhrases[val];
+        stars.forEach(s => {
+          if (s.getAttribute('data-value') <= val) {
+            s.classList.add('text-yellow-400');
+            s.classList.remove('text-slate-500');
+          } else {
+            s.classList.remove('text-yellow-400');
+            s.classList.add('text-slate-500');
+          }
+        });
+      });
+      star.addEventListener('mouseover', () => {
+        const hv = star.getAttribute('data-value');
+        stars.forEach(s => {
+          if (s.getAttribute('data-value') <= hv) {
+            s.classList.add('text-yellow-300');
+          }
+        });
+      });
+      star.addEventListener('mouseout', () => {
+        stars.forEach(s => {
+          s.classList.remove('text-yellow-300');
+        });
+      });
+    });
+
+    // Modal elements
+    const emailModal = document.getElementById('email-modal');
+    const cancelBtn = document.getElementById('cancel-btn');
+    const sendBtn = document.getElementById('send-email-btn');
+    const progressFill = document.getElementById('progress-fill');
+    const progressPct = document.getElementById('progress-percentage');
+
+    function animateProgressBar() {
+      let w = 0;
+      const iv = setInterval(() => {
+        if (w >= 100) clearInterval(iv);
+        else {
+          w++;
+          progressFill.style.width = w + '%';
+          progressPct.textContent = w + '%';
+        }
+      }, 20);
+    }
+
+    document.getElementById('survey-form').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!ratingInput.value) {
+        ratingText.textContent = "Please rate the project before submitting";
+        ratingText.classList.add('text-red-400');
+        setTimeout(() => {
+          ratingText.classList.remove('text-red-400');
+          ratingText.textContent = "Tap to rate (1-5 stars)";
+        }, 3000);
+        return;
+      }
+      emailModal.style.display = 'flex';
+      animateProgressBar();
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      emailModal.style.display = 'none';
+    });
+
+    sendBtn.addEventListener('click', () => {
+      const formData = new FormData(document.getElementById('survey-form'));
+      const data = Object.fromEntries(formData.entries());
+      let body = `🌿 Yamuna River Clean‑Up Survey Results - Delhi 🌿\n\n`;
+      body += `Survey submitted on: ${new Date().toLocaleString()}\n\n`;
+      body += "========================================\n";
+      body += "Survey Summary\n";
+      body += "========================================\n";
+      if (data.name||data.age||data.occupation) {
+        body += "\n--- Personal Information ---\n";
+        if (data.name) body += `  Name: ${data.name}\n`;
+        if (data.age) body += `  Age: ${data.age}\n`;
+        if (data.occupation) body += `  Occupation: ${data.occupation}\n`;
+        if (data['live-near-river']) body += `  Lives near river: ${data['live-near-river']}\n`;
+      }
+      body += "\n--- Awareness & Participation ---\n";
+      if (data['aware-before']) body += `  Was aware of pollution: ${data['aware-before']}\n`;
+      if (data['participated-before']) body += `  Clean‑up experience: ${data['participated-before']}\n`;
+      if (data['heard-from']) body += `  Heard about project from: ${data['heard-from']}\n`;
+      body += "\n--- Environmental Attitudes ---\n";
+      if (data.importance) body += `  Importance of clean river: ${data.importance}\n`;
+      if (data['pollution-causes']) body += `  Pollution causes:\n    ${data['pollution-causes'].replace(/\n/g,'\n    ')}\n`;
+      body += "\n--- Project Feedback ---\n";
+      if (data.impact) body += `  Impact of clean‑up: ${data.impact}\n`;
+      if (data['liked-part']) body += `  Liked most:\n    ${data['liked-part'].replace(/\n/g,'\n    ')}\n`;
+      if (data.improvements) body += `  Suggestions for improvement:\n    ${data.improvements.replace(/\n/g,'\n    ')}\n`;
+      body += "\n--- Your Role ---\n";
+      if (data.volunteer) body += `  Future volunteer: ${data.volunteer}\n`;
+      if (data.message) body += `  Message to team:\n    ${data.message.replace(/\n/g,'\n    ')}\n`;
+      body += "\n--- Project Rating ---\n";
+      if (data.rating) {
+        const rv = parseInt(data.rating);
+        const stars = '★'.repeat(rv) + '☆'.repeat(5-rv);
+        body += `  Rating: ${stars} (${rv}/5)\n`;
+        body += `  Comment: "${ratingPhrases[data.rating]}"\n`;
+      }
+      body += "\n========================================\n";
+      body += "Thank you for supporting Delhi's river clean‑up initiative!\n";
+      body += "Your feedback helps us create a cleaner environment for everyone.\n\n";
+      body += "Yamuna River Clean‑Up Initiative\nDelhi, India\n";
+      const subject = "Yamuna River Clean‑Up Survey Submission - Delhi";
+      const mailtoLink = `mailto:jahazielolivera127127@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      // open in new tab for better compatibility
+      window.open(mailtoLink, "_blank");
+      emailModal.style.display = 'none';
+      const overlay = document.getElementById('transition');
+      overlay.classList.remove('pointer-events-none','opacity-0');
+      overlay.classList.add('opacity-100','scale-0');
+      setTimeout(() => {
+        window.location.href = 'thankyou.html';
+      }, 1300);
+    });
+  </script>
+</body>
+</html>
